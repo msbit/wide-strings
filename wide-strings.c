@@ -7,9 +7,10 @@ void printAlternate(const char *, int, int);
 void findWideStrings(const char *, int, int);
 
 int main(int argc, char **argv) {
-  while (*(++argv) != NULL) {
-    printf("%s:\n", *argv);
-    FILE *f = fopen(*argv, "r");
+  for (int i = 1; i < argc; i++) {
+    const char *filename = argv[i];
+    printf("%s:\n", filename);
+    FILE *f = fopen(filename, "r");
     if (f == NULL) {
       perror("fopen");
       continue;
@@ -33,7 +34,7 @@ int main(int argc, char **argv) {
       goto cleanup_close;
     }
 
-    if (fread(buffer, 1, size, f) != size) {
+    if (fread(buffer, 1, size, f) != (size_t)size) {
       perror("fread");
       goto cleanup_free;
     }
